@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 export default function PostForm({ post }) {
+
+    
     const { register, handleSubmit, watch, setValue, control, getValues } = useForm({
         defaultValues: {
             title: post?.title || "",
@@ -91,53 +93,77 @@ This argument is a string representing the type of event that triggered the call
         return () => subscription.unsubscribe();
     }, [watch, slugTransform, setValue]);
 
+
+
+
+
+
+
+
     return (
-        <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
-            <div className="w-2/3 px-2">
-                <Input
-                    label="Title :"
-                    placeholder="Title"
-                    className="mb-4"
-                    {...register("title", { required: true })}
-                />
-                <Input
-                    label="Slug :"
-                    placeholder="Slug"
-                    className="mb-4"
-                    {...register("slug", { required: true })}
-                    onInput={(e) => {
-                        setValue("slug", slugTransform(e.currentTarget.value), { shouldValidate: true });
-                    }}
-                />
-                <RTE label="Content :" name="content" control={control} defaultValue={getValues("content")} />
+        <form
+        onSubmit={handleSubmit(submit)}
+        className="flex flex-wrap justify-center bg-white p-4 rounded-lg shadow-lg gap-y-4 "
+      >
+        {/* Left Section */}
+        <div className="w-full md:w-2/3 px-4">
+          <Input
+            label="Title :"
+            placeholder="Title"
+            className="mb-4 w-full"
+            {...register("title", { required: true })}
+          />
+          <Input
+            label="Slug :"
+            placeholder="Slug"
+            className="mb-4 w-full"
+            {...register("slug", { required: true })}
+            onInput={(e) => {
+              setValue("slug", slugTransform(e.currentTarget.value), { shouldValidate: true });
+            }}
+          />
+          <RTE
+            label="Content :"
+            name="content"
+            control={control}
+            defaultValue={getValues("content")}
+            className="w-full"
+          />
+        </div>
+      
+        {/* Right Section */}
+        <div className="w-full md:w-1/3 px-4">
+          <Input
+            label="Featured Image :"
+            type="file"
+            className="mb-4 w-full"
+            accept="image/png, image/jpg, image/jpeg, image/gif"
+            {...register("image", { required: !post })}
+          />
+          {post && (
+            <div className="w-full mb-4">
+              <img
+                src={appwriteService.getFilePreview(post.featuredImage)}
+                alt={post.title}
+                className="rounded-lg w-full object-cover"
+              />
             </div>
-            <div className="w-1/3 px-2">
-                <Input
-                    label="Featured Image :"
-                    type="file"
-                    className="mb-4"
-                    accept="image/png, image/jpg, image/jpeg, image/gif"
-                    {...register("image", { required: !post }) /*Every input field have a name & we have given this input field a name:'title'. So when we access value in above useEffect method it will check for this name:'title' */}
-                />
-                {post && (
-                    <div className="w-full mb-4">
-                        <img
-                            src={appwriteService.getFilePreview(post.featuredImage)}
-                            alt={post.title}
-                            className="rounded-lg"
-                        />
-                    </div>
-                )}
-                <Select
-                    options={["active", "inactive"]}
-                    label="Status"
-                    className="mb-4"
-                    {...register("status", { required: true })}
-                />
-                <Button type="submit" bgColor={post ? "bg-green-500" : undefined} className="w-full">
-                    {post ? "Update" : "Submit"}
-                </Button>
-            </div>
-        </form>
+          )}
+          <Select
+            options={["active", "inactive"]}
+            label="Status"
+            className="mb-4 w-full"
+            {...register("status", { required: true })}
+          />
+          <Button
+            type="submit"
+            bgColor={post ? "bg-green-500" : undefined}
+            className="w-full"
+          >
+            {post ? "Update" : "Submit"}
+          </Button>
+        </div>
+      </form>
+      
     );
 }

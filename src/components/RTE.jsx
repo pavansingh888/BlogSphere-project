@@ -6,7 +6,7 @@ import {Controller } from 'react-hook-form';
 //control - will come from react react hook form, and it is responsible to take all of this editors state to the form which is using this Editor component.(Editor is component, so from component to form the form which is using this component)
 export default function RTE({name, control, label, defaultValue =""}) {
   return (
-    <div className='w-full'> 
+    <div className='w-full'>  
     {label && <label className='inline-block mb-1 pl-1'>{label}</label>}
     
     <Controller
@@ -14,6 +14,7 @@ export default function RTE({name, control, label, defaultValue =""}) {
     control={control} //this control will give control(event,value,data) to the parent element which have given this control.
     render={({field: {onChange}}) => ( //how will it render, we will have a field, on that field we will apply tracking. so that what change is happening should be informed to parent component with render.
         <Editor
+        apiKey='njeuiqt3il7kww8897xxuo8y1pggjvujjp8pllzaf0t02wkq'
         initialValue={defaultValue}
         init={{
             initialValue: defaultValue,
