@@ -99,6 +99,21 @@ export class Service{
         }
     }
 
+
+    async getUserPosts(userId='',status='active'){
+        try {
+            const queries = [Query.equal("status", status),Query.equal("userId", userId)]
+            return await this.databases.listDocuments(
+                conf.appwriteDatabaseId,
+                conf.appwriteCollectionId,
+                queries,
+            )
+        } catch (error) {
+            console.log("Appwrite serive :: getPosts :: error", error);
+            return false
+        }
+    }
+
     //file upload service - we can apply this file upload service in a separate file. we will be giving the actual file in method argument intead of just file name - remember.
     async uploadFile(file){
         try {

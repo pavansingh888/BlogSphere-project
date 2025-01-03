@@ -5,19 +5,19 @@ import { Link } from "react-router-dom";
 function PostCard({ $id, title, featuredImage }) {
   //$id = written like this coz its appwrite syntax
   return (
-    <Link to={`/post/${$id}`} className="w-72">
-      <div className="w-full bg-white rounded-xl shadow-md p-4 hover:shadow-lg transition-shadow duration-200">
+    <Link to={`/post/${$id}`} >
+      <div className="w-64 bg-white rounded-xl shadow-md p-4 hover:shadow-xl transition-shadow duration-200">
         {/* Image Container */}
-        <div className="w-full mb-4 flex justify-center">
+        <div className="mb-2 flex justify-center">
           <img
             src={service.getFilePreview(featuredImage)}
             alt={title}
-            className="rounded-xl object-cover h-48 sm:h-60 md:h-68 md:h-72"
+            className="rounded-lg object-cover w-56 h-68"
           />
         </div>
 
         {/* Title */}
-        <h2 className="text-xl font-bold text-blue-600 hover:text-emerald-500 mb-2 transition-colors duration-200">
+        <h2 className="text-xl font-semibold text-blue-600 hover:text-emerald-500 transition-colors duration-200 text-left  text-nowrap overflow-hidden" alt={title} title={title}>
           {title}
         </h2>
 

@@ -2,31 +2,38 @@ import React, { useState, useEffect } from "react";
 import { Container, PostCard, PostCardShimmer } from "../components";
 import appwriteService from "../appwrite/config";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import ToggleStatus from "../components/ToggleStatus";
 
-function AllPosts() {
+function MyPosts() {
   const [posts, setPosts] = useState([]); //inside which we will take array of posts.
   const [loading, setLoading] = useState(true);
+  const userId = useSelector((store)=> store?.auth?.userData?.$id);
+  const [showStatus,setShowStatus] = useState("Active")
   useEffect(() => {
-    appwriteService.getPosts([]).then((posts) => {
+    setLoading(true);
+    appwriteService.getUserPosts(userId,showStatus).then((posts) => {
       if (posts) {
         setPosts(posts.documents);
         setLoading(false);
       }
     });
-  }, []); //when the component will get loaded, useEffect will be used.
+  }, [showStatus,setShowStatus]); //when the component will get loaded, useEffect will be used.
 
   if (!loading && posts.length === 0) {
     return (
-      <div className="w-full py-8 mt-4 bg-cyan-50">
+      <div className="w-full mt-4 bg-cyan-50 min-h-screen">
         <Container>
-          <div className="flex flex-wrap justify-center">
+        <ToggleStatus showStatus={showStatus} setShowStatus={(status)=>setShowStatus(status)}/>
+
+          <div className="flex flex-wrap justify-center mt-20 py-8">
             <div className="p-4 w-full md:w-2/3 lg:w-1/2">
               <h1 className="text-3xl font-bold text-center text-blue-600 mb-4">
-                No Posts Available Yet
+                No {showStatus} Posts Available
               </h1>
               <p className="text-lg text-gray-700 mb-6">
-                It looks like there are no posts available at the moment. Log in
-                to get started or check back later.
+                It looks like there are no posts available at the moment. Click below
+                to get started with a post.
               </p>
               <div className="text-center">
                 <Link to="/add-post">
@@ -43,9 +50,10 @@ function AllPosts() {
   }
 
   return (
-    <div className="w-full ">
+    <div className="w-full mt-4 bg-cyan-50 min-h-screen">
       <Container>
-        <div className="flex flex-wrap justify-center">
+      <ToggleStatus showStatus={showStatus} setShowStatus={(status)=>setShowStatus(status)}/>
+        <div className="flex flex-wrap justify-center mt-16">
           {loading
             ? Array.from({ length: 12 }).map((_, index) => (
                 <div key={index} className="m-4">
@@ -63,4 +71,4 @@ function AllPosts() {
   );
 }
 
-export default AllPosts;
+export default MyPosts;

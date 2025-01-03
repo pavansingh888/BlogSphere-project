@@ -11,7 +11,7 @@ function Home() {
       if (posts) {
         setPosts(posts.documents);
         setLoading(false);
-      }else{
+      } else {
         setLoading(false);
       }
     });
@@ -47,19 +47,22 @@ function Home() {
   return (
     <div className="w-full bg-cyan-50">
       <Container>
-        <h1 className="text-4xl font-bold text-center text-blue-600 mb-6">
-          Welcome to Your Next Read: Explore Fresh Insights & Inspiring Stories
-        </h1>
+        {!loading && (
+          <h1 className="text-2xl sm:text-3xl md:text-4xl  font-bold text-center text-blue-600 mb-6">
+            Welcome to Your Next Read: Explore Fresh Insights & Inspiring
+            Stories
+          </h1>
+        )}
 
         <div className="flex flex-wrap justify-center">
           {loading
             ? Array.from({ length: 12 }).map((_, index) => (
-                <div key={index} className="m-4">
+                <div key={index} className='m-2' >
                   <PostCardShimmer />
                 </div>
               ))
             : posts.map((post) => (
-                <div key={post.$id} className="m-4">
+                <div key={post.$id} className='m-2' >
                   <PostCard {...post} />
                 </div>
               ))}

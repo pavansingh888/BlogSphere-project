@@ -2,11 +2,11 @@ import React from 'react'
 
 const PostCardShimmer = () => {
   return (
-    <div className="w-72">
+    <div className="w-64">
   <div className="w-full bg-white rounded-xl shadow-md p-4">
     {/* Shimmer Image Placeholder */}
     <div className="w-full mb-4 flex justify-center">
-      <div className="rounded-xl bg-gray-200 w-full h-48 sm:h-60 md:h-68 animate-pulse"></div>
+      <div className="rounded-xl bg-gray-200 w-56 h-48 animate-pulse"></div>
     </div>
 
     {/* Shimmer Title Placeholder */}
