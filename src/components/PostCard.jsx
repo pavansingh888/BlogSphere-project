@@ -2,28 +2,38 @@ import React from "react";
 import service from "../appwrite/config";
 import { Link } from "react-router-dom";
 
-function PostCard({ $id, title, featuredImage }) {
+function PostCard({ $id, title, featuredImage, $updatedAt }) {
   //$id = written like this coz its appwrite syntax
   return (
-    <Link to={`/post/${$id}`} >
-      <div className="w-64 bg-white rounded-xl shadow-md p-4 hover:shadow-xl transition-shadow duration-200">
+    <Link to={`/post/${$id}`}>
+      <div className="w-60 bg-white rounded-md shadow-lg hover:shadow-2xl transition-shadow duration-200 flex flex-col ">
         {/* Image Container */}
-        <div className="mb-2 flex justify-center">
+        <div className="flex justify-center ">
           <img
             src={service.getFilePreview(featuredImage)}
             alt={title}
-            className="rounded-lg object-cover w-56 h-68"
+            className="rounded-t-md object-cover w-full h-56"
           />
         </div>
 
-        {/* Title */}
-        <h2 className="text-xl font-semibold text-blue-600 hover:text-emerald-500 transition-colors duration-200 text-left  text-nowrap overflow-hidden" alt={title} title={title}>
-          {title}
-        </h2>
+        {/* Title & metadata*/}
+        <div className="mx-4 my-2">
+          <h2
+            className="text-xl font-semibold text-blue-900 hover:text-emerald-500 transition-colors duration-200 text-left  text-nowrap overflow-hidden"
+            alt={title}
+            title={title}
+          >
+            {title}
+          </h2>
 
-        {/* Optional Description or Metadata */}
-        {/* You can add a short description or metadata here if required */}
-        {/* <p className="text-sm text-gray-700 truncate">{description}</p> */}
+          <p className="text-sm text-left opacity-70">
+            {new Date($updatedAt).toLocaleDateString("en-US", {
+              year: "numeric",
+              day: "numeric",
+              month: "long",
+            })}
+          </p>
+        </div>
       </div>
     </Link>
   );

@@ -6,17 +6,23 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 export default function PostForm({ post }) {
-  const [error, setError] = useState("");
-
-  const { register, handleSubmit, watch, setValue, control, getValues } =
-    useForm({
-      defaultValues: {
-        title: post?.title || "",
-        slug: post?.$id || "",
-        content: post?.content || "",
-        status: post?.status || "active",
-      },
-    });
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    control,
+    getValues,
+    setError,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      title: post?.title || "",
+      slug: post?.$id || "",
+      content: post?.content || "",
+      status: post?.status || "active",
+    },
+  });
 
   const navigate = useNavigate();
   const userData = useSelector((state) => state.auth.userData);
@@ -113,78 +119,118 @@ This argument is a string representing the type of event that triggered the call
   }, [watch, slugTransform, setValue]);
 
   return (
-    <form
-      onSubmit={handleSubmit(submit)}
-      className="flex flex-wrap justify-center bg-white p-4 rounded-lg shadow-lg gap-y-4 "
-    >
-      {/* Left Section */}
-      <div className="w-full md:w-2/3 px-4 text-left text-base">
-        <Input
-          label="Title :"
-          placeholder="Title"
-          className="mb-4 w-full"
-          {...register("title", { required: true })}
-        />
-        <Input
-          label="Slug :"
-          placeholder="Slug"
-          className="mb-4 w-full"
-          {...register("slug", { required: true })}
-          onInput={(e) => {
-            setValue("slug", slugTransform(e.currentTarget.value), {
-              shouldValidate: true,
-            });
-          }}
-        />
-        <RTE
-          label="Content :"
-          name="content"
-          control={control}
-          defaultValue={getValues("content")}
-          className="w-full"
-        />
-      </div>
+    <div>
+      <h1 className="text-2xl sm:text-3xl md:text-4xl  font-bold text-center text-blue-600 mb-6">
+        Add Whats on your mind!
+      </h1>
 
-      {/* Right Section */}
-      <div className="w-full md:w-1/3 px-4 text-left text-base">
-        <Input
-          label="Featured Image :"
-          type="file"
-          className="mb-4 w-full"
-          accept="image/png, image/jpg, image/jpeg, image/gif"
-          {...register("image", { required: !post })}
-        />
-        {post && (
-          <div className="w-full mb-4">
-            <img
-              src={appwriteService.getFilePreview(post.featuredImage)}
-              alt={post.title}
-              className="rounded-lg w-full object-cover"
+      <form
+        onSubmit={handleSubmit(submit)}
+        className=" bg-white p-4 rounded-lg shadow-lg "
+      >
+        
+        <div className="flex flex-wrap justify-center gap-y-4">
+          {/* Left Section */}
+          <div className="w-full md:w-2/3 px-4 text-left text-base">
+            <Input
+              label="Title :"
+              placeholder="Title"
+              className="mb-2 w-full"
+              {...register("title", {
+                required: "Title is required",
+                validate: {
+                  matchPattern: (value) => {
+                    return (
+                      /^[A-Za-z0-9 ]{1,36}$/.test(value) ||
+                      "Title should be less than 36 chars with no special char"
+                    );
+                  },
+                },
+              })}
+            />
+            {errors.title && (
+              <p className="text-red-500 text-sm mb-2">{errors.title.message}</p>
+            )}
+            <Input
+              label="Slug :"
+              placeholder="Slug"
+              className="mb-2 w-full"
+              {...register("slug", {
+                 required: "Slug is required",
+                 validate: {
+                   notEmpty: (value) =>
+                     value.trim() !== "" || "Slug cannot be empty or whitespace",
+                  
+                 },
+                })}
+              onInput={(e) => {
+                setValue("slug", slugTransform(e.currentTarget.value), {
+                  shouldValidate: true,
+                });
+              }}
+            />
+            {errors.slug && <p className="text-red-500 text-sm mb-2">{errors.slug.message}</p>}
+            <RTE
+              label="Content :"
+              name="content"
+              control={control}
+              defaultValue={getValues("content")}
+              className="w-full"
+              rules={{
+                required: "Content is required",
+                validate: {
+                  maxLength: (value) =>
+                    value && value.length <= 2500 || "Content must not exceed 2500 characters",
+                },
+              }}
             />
           </div>
-        )}
-        <div className="mb-4 w-full">
-          <label
-            htmlFor="status"
-            className="block text-left text-base mb-1"
-          >
-            Status :
-          </label>
-          <Select
-            id="status"
-            options={["active", "inactive"]}
-            className="w-full"
-            {...register("status", { required: true })}
-          />
+
+          {/* Right Section */}
+          <div className="w-full md:w-1/3 px-4 text-left text-base">
+            <Input
+              label="Featured Image :"
+              type="file"
+              className="mb-2 w-full"
+              accept="image/png, image/jpg, image/jpeg, image/gif"
+              {...register("image", {  required: !post && "Featured Image is required", })}
+            />
+            {errors.image && <p className="text-red-500 text-sm mb-2">{errors.image.message}</p>}
+
+            {post && (
+              <div className="w-full mb-2">
+                <img
+                  src={appwriteService.getFilePreview(post.featuredImage)}
+                  alt={post.title}
+                  className="rounded-lg w-full object-cover"
+                />
+              </div>
+            )}
+            <div className="mb-4 w-full">
+              <label
+                htmlFor="status"
+                className="block text-left text-base mb-1"
+              >
+                Status :
+              </label>
+              <Select
+                id="status"
+                options={["active", "inactive"]}
+                className="w-full"
+                {...register("status", {   required: "Status is required", })}
+              />
+               {errors.status && <p className="text-red-500 text-sm mb-2" >{errors.status.message}</p>}
+            </div>
+            <Button
+              type="submit"
+              bgColor={post ? "bg-green-500 focus:bg-green-600" : "bg-blue-600 focus:bg-blue-700"}
+              className="w-full"
+            >
+              {post ? "Update" : "Submit"}
+            </Button>
+          </div>
         </div>
-        <Button
-          type="submit"
-          bgColor={post ? "bg-green-500" : undefined}
-          className="w-full"
-        >
-          {post ? "Update" : "Submit"}
-        </Button>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 }

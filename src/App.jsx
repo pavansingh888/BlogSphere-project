@@ -35,7 +35,7 @@ function App() {
       <Header />
   
       {/* Main Content */}
-      <main className="flex-1 w-full pb-8 pt-[100px] md:pt-[120px]">
+      <main className="flex-1 w-full pb-8 pt-20 md:pt-[100px] ">
         <Outlet />
       </main>
     </div>

@@ -2,18 +2,17 @@ import React from 'react'
 
 const PostCardShimmer = () => {
   return (
-    <div className="w-64">
-  <div className="w-full bg-white rounded-xl shadow-md p-4">
+    <div className="w-60 flex flex-col">
+  <div className="w-full bg-white rounded-md shadow-md">
     {/* Shimmer Image Placeholder */}
     <div className="w-full mb-4 flex justify-center">
-      <div className="rounded-xl bg-gray-200 w-56 h-48 animate-pulse"></div>
+      <div className="rounded-t-md bg-gray-200 w-full h-52 animate-pulse"></div>
     </div>
 
-    {/* Shimmer Title Placeholder */}
-    <div className="h-6 bg-gray-200 rounded-md mb-2 w-3/4 animate-pulse"></div>
-
-    {/* Optional Description or Metadata Placeholder */}
-    <div className="h-4 bg-gray-200 rounded-md w-1/2 animate-pulse"></div>
+    <div className="mx-4 my-2">
+    <div className="h-5 bg-gray-200 rounded-md w-3/4 mb-1 animate-pulse"></div>
+    <div className="h-4 bg-gray-200 rounded-md w-1/2 mb-1 animate-pulse"></div>
+    </div>
   </div>
 </div>
 

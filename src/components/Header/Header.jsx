@@ -45,7 +45,7 @@ function Header() {
 
   return (
     <div>
-      <header className="py-4 bg-blue-600 shadow-md w-full fixed top-0 z-50  max-[470px]:py-2 ">
+      <header className="md:py-4 bg-blue-600 shadow-md w-full fixed top-0 z-50 py-2 ">
         <Container>
           <nav className="flex items-center justify-between">
             <div className="flex items-center">
