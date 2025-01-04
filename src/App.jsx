@@ -1,4 +1,4 @@
-import {useDispatch} from "react-redux"
+import {useDispatch, useSelector} from "react-redux"
 import React, { useState, useEffect } from 'react'
 import './App.css'
 import authService from "./appwrite/auth"
@@ -11,6 +11,7 @@ function App() {
   //we will make a loading state  - When we will fetch data from Appwrite application and this might take some time  - for this making loading state is good so that on basis of loading we can do conditional rendering using if else.
   const [loading, setLoading] = useState(true)
   const dispatch = useDispatch()
+  const userData = useSelector((store)=>store?.auth?.userData)
 
   useEffect(()=>{
     authService.getCurrentUser()
@@ -32,7 +33,7 @@ function App() {
     <div className="min-h-screen flex flex-col bg-cyan-50">
     <div className="flex-1 w-full">
       {/* Header */}
-      <Header />
+      <Header userName={userData?.name}/>
   
       {/* Main Content */}
       <main className="flex-1 w-full pb-8 pt-20 md:pt-[100px] ">

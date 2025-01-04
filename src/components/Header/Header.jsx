@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-function Header() {
+function Header({userName}) {
   const authStatus = useSelector((state) => state.auth.status);
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // State to control sidebar visibility
@@ -52,6 +52,7 @@ function Header() {
               <Link to="/" className="w-[50px]">
                 <Logo />
               </Link>
+              {userName && <p className="font-bold px-6 py-2 text-white italic">Hello! &nbsp;{userName}</p>}
             </div>
 
             <button
