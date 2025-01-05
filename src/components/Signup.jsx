@@ -79,11 +79,18 @@ function Signup() {
               },
              })}
           />
-          <Button type="submit" className="w-full bg-emerald-500 text-white py-2 rounded-full hover:bg-emerald-600 duration-200">
+          <Button type="submit" className="w-full bg-blue-500 text-white py-2 rounded-full hover:bg-blue-600  focus:bg-blue-700 duration-200">
             Create Account
           </Button>
         </div>
       </form>
+      <Link
+          to="/login"
+        >
+          <Button className="w-full bg-emerald-500 text-white py-2 rounded-full hover:bg-emerald-600 duration-200 focus:bg-emerald-700 mt-8">
+          Login as a Guest
+          </Button>
+        </Link>
     </div>
   
   )

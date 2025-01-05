@@ -9,11 +9,21 @@ import {useForm} from "react-hook-form" //
 function Login() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const {register, handleSubmit} = useForm()
+    const {register, handleSubmit,setValue} = useForm()
     const [error, setError] = useState("")
     //creating login method as handleSubmit is already used in useForm()
+
+    const handleGuestLogin = () => {
+      setValue("email","guest@guest.com");
+      setValue("password","Guest@1234");
+
+      handleSubmit(login)();
+    }
+
     const login = async(data) => {
         setError("") // the moment we click on login, errors should be cleaned, so always use this.
+        console.log(data);
+        
         try {
             const session = await authService.login(data) //creating email password session in appwrite
             if (session) {
@@ -73,11 +83,17 @@ function Login() {
               },
             })}
           />
-          <Button type="submit" className="w-full bg-emerald-500 text-white py-2 rounded-full hover:bg-emerald-600 duration-200 focus:bg-emerald-700">
+          <Button type="submit" className="w-full bg-blue-500 text-white py-2 rounded-full hover:bg-blue-600 duration-200 focus:bg-blue-700">
             Sign in
           </Button>
         </div>
       </form>
+
+      <div className='mt-8'>
+      <Button onClick={handleGuestLogin} className="w-full bg-emerald-500 text-white py-2 rounded-full hover:bg-emerald-600 duration-200 focus:bg-emerald-700" >
+          Login as a Guest
+          </Button>
+      </div>
     </div>
   </div>
   

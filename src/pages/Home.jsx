@@ -6,6 +6,11 @@ import { Link } from "react-router-dom";
 function Home() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   useEffect(() => {
     appwriteService.getPosts().then((posts) => {
       if (posts) {
