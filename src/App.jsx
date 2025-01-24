@@ -30,13 +30,13 @@ function App() {
 
   //conditional rendering:
   return !loading ? (
-    <div className="min-h-screen flex flex-col bg-cyan-50">
+    <div className="min-h-screen w-full flex flex-col bg-cyan-50">
       <div className="flex-1 w-full">
         {/* Header */}
         <Header userName={userData?.name} />
 
         {/* Main Content */}
-        <main className="flex-1 w-full pb-8 pt-20 md:pt-[100px] ">
+        <main className="flex-1 w-full pb-8 pt-8 md:pt-[20px] ">
           <Outlet />
         </main>
       </div>
@@ -44,6 +44,7 @@ function App() {
       {/* Footer */}
       <Footer />
     </div>
+    
   ) : null;
 }
 
