@@ -1,5 +1,4 @@
 
-```markdown
 # React Blog Application
 
 A modern blog application built with **React** and **Vite** for the frontend, **Tailwind CSS** for styling, and **TinyMCE** for rich text editing. The app leverages **Appwrite** as a backend-as-a-service (BaaS) for handling authentication, database operations, and file management.
