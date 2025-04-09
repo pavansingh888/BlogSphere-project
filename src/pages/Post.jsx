@@ -4,9 +4,11 @@ import appwriteService from "../appwrite/config";
 import { Button, Container } from "../components";
 import parse from "html-react-parser";
 import { useSelector } from "react-redux";
+import { replacePreviewWithView } from "../utils/utils";
 
 export default function Post() {
   const [post, setPost] = useState(null);
+  const [updatedUrl, setUpdatedUrl] = useState("");
   const { slug } = useParams();
   const navigate = useNavigate();
 
@@ -21,8 +23,9 @@ export default function Post() {
   useEffect(() => {
     if (slug) {
       appwriteService.getPost(slug).then((post) => {
-        if (post) setPost(post);
-        else navigate("/");
+        if (post) {
+          setPost(post);
+        } else navigate("/");
       });
     } else navigate("/");
   }, [slug, navigate]);
@@ -36,6 +39,15 @@ export default function Post() {
     });
   };
 
+
+    useEffect(() => {
+        if (post) {
+            const originalUrl = appwriteService.getFilePreview(post.featuredImage).href;
+            const newUrl = replacePreviewWithView(originalUrl);
+            setUpdatedUrl(newUrl);
+        }
+    }, [post]);
+
   return post ? (
     <div className="py-6 bg-gray-50 mx-2 md:mx-4 rounded-xl">
       <Container>
@@ -43,7 +55,7 @@ export default function Post() {
           {/* Featured Image */}
           <div className="w-full flex justify-center mb-6 relative rounded-xl">
             <img
-              src={appwriteService.getFilePreview(post.featuredImage)}
+              src={updatedUrl}
               alt={post.title}
               className="rounded-xl object-cover w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-2xl max-h-[300px] sm:max-h-[400px] md:max-h-[500px]"
             />

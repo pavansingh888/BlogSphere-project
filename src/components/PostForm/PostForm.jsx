@@ -1,9 +1,10 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button, Input, RTE, Select } from "..";
 import appwriteService from "../../appwrite/config";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { replacePreviewWithView } from "../../utils/utils";
 
 export default function PostForm({ post }) {
   const {
@@ -23,7 +24,7 @@ export default function PostForm({ post }) {
       status: post?.status || "active",
     },
   });
-
+  const [updatedUrl, setUpdatedUrl] = useState("");
   const navigate = useNavigate();
   const userData = useSelector((state) => state.auth.userData);
 
@@ -118,6 +119,15 @@ This argument is a string representing the type of event that triggered the call
     return () => subscription.unsubscribe();
   }, [watch, slugTransform, setValue]);
 
+
+    useEffect(() => {
+        if (post) {
+            const originalUrl = appwriteService.getFilePreview(post.featuredImage).href;
+            const newUrl = replacePreviewWithView(originalUrl);
+            setUpdatedUrl(newUrl);
+        }
+    }, [post]);
+
   return (
     <div>
       <h1 className="text-2xl sm:text-3xl md:text-4xl  font-bold text-center text-blue-600 mb-6">
@@ -200,7 +210,7 @@ This argument is a string representing the type of event that triggered the call
             {post && (
               <div className="w-full mb-2">
                 <img
-                  src={appwriteService.getFilePreview(post.featuredImage)}
+                  src={updatedUrl}
                   alt={post.title}
                   className="rounded-lg w-full object-cover"
                 />

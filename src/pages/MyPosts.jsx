@@ -4,6 +4,7 @@ import appwriteService from "../appwrite/config";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ToggleStatus from "../components/ToggleStatus";
+import { shuffleArray } from "../utils/utils";
 
 function MyPosts() {
   const [posts, setPosts] = useState([]); //inside which we will take array of posts.
@@ -19,7 +20,8 @@ function MyPosts() {
     setLoading(true);
     appwriteService.getUserPosts(userId, showStatus).then((posts) => {
       if (posts) {
-        setPosts(posts.documents);
+        const shuffledPosts = shuffleArray(posts.documents);
+        setPosts(shuffledPosts);
         setLoading(false);
       }
     });

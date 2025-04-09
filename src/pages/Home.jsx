@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import appwriteService from "../appwrite/config";
 import { Container, PostCard, PostCardShimmer } from "../components";
 import { Link } from "react-router-dom";
+import { shuffleArray } from "../utils/utils";
 
 function Home() {
   const [posts, setPosts] = useState([]);
@@ -14,9 +15,8 @@ function Home() {
   useEffect(() => {
     appwriteService.getPosts().then((posts) => {
       if (posts) {
-        console.log(posts);
-
-        setPosts(posts.documents);
+        const shuffledPosts = shuffleArray(posts.documents);
+        setPosts(shuffledPosts);
         setLoading(false);
       } else {
         setLoading(false);
